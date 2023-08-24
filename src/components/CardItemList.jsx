@@ -7,30 +7,34 @@ export const CardItemList = () => {
   const [lastCard, setLastCard] = useState(null);
   const onClickHandler = (currentId) => {
     const clickedCard = cardList.filter(({ id }) => id === currentId);
-    if (!lastCard) {
-      setLastCard(clickedCard);
-      const firstSet = cardList.map((card) => {
-        return card?.id === currentId ? { ...card, isOpen: true } : { ...card };
-      });
-      setLastCard(clickedCard[0]);
-      setCardList(firstSet);
-    } else {
-      if (clickedCard[0]?.name !== lastCard?.name) {
-        const revertList = cardList.map((card) => {
-          return card?.id === lastCard?.id
-            ? { ...card, isOpen: false }
-            : { ...card };
-        });
-        setLastCard(null);
-        setCardList(revertList);
-      } else {
-        const updatedList = cardList.map((card) => {
+    if (!clickedCard[0]?.isOpen) {
+      if (!lastCard) {
+        setLastCard(clickedCard);
+        const firstSet = cardList.map((card) => {
           return card?.id === currentId
             ? { ...card, isOpen: true }
             : { ...card };
         });
-        setLastCard(null);
-        setCardList(updatedList);
+        setLastCard(clickedCard[0]);
+        setCardList(firstSet);
+      } else {
+        if (clickedCard[0]?.name !== lastCard?.name) {
+          const revertList = cardList.map((card) => {
+            return card?.id === lastCard?.id
+              ? { ...card, isOpen: false }
+              : { ...card };
+          });
+          setLastCard(null);
+          setCardList(revertList);
+        } else {
+          const updatedList = cardList.map((card) => {
+            return card?.id === currentId
+              ? { ...card, isOpen: true }
+              : { ...card };
+          });
+          setLastCard(null);
+          setCardList(updatedList);
+        }
       }
     }
   };
